@@ -79,7 +79,7 @@ public Drum (int instrument, int volume, int part) {
 
     this (instrument, part);
     
-    this.volume     = volume;
+    this.volume = volume;
 
     if      (this.volume > 127) { this.volume = 127; }
     else if (this.volume < 0)   { this.volume = 0;   }
@@ -96,14 +96,30 @@ public Drum (int instrument, int volume, int part) {
 
 public Drum (int instrument, int part) {
 
+    this (instrument);
+    
+    this.part = part;
+    
+    if      (this.part > 16) { this.part = 16; }
+    else if (this.part < 1)  { this.part = 1;  }
+
+}
+
+// ............................................................................
+
+    /**
+     * Конструктор класу Drum
+     * @param instrument ударний інструмент, від 35 до 81
+     */
+
+public Drum (int instrument) {
+
     this.instrument = instrument;
-    this.part       = part;
+    this.volume     = 127;
+    this.part       = 1;
     
     if      (this.instrument > 81) { this.instrument = 81; }
     else if (this.instrument < 35) { this.instrument = 35; }
-
-    if      (this.part > 16) { this.part = 16; }
-    else if (this.part < 1)  { this.part = 1;  }
 
 }
 
