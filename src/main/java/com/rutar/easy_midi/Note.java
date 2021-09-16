@@ -293,7 +293,7 @@ public Note (int note, int instrument, int volume, int part) {
 
     this (note, instrument, part);
     
-    this.volume     = volume;
+    this.volume = volume;
 
     if      (this.volume > 127) { this.volume = 127; }
     else if (this.volume < 0)   { this.volume = 0;   }
@@ -311,18 +311,35 @@ public Note (int note, int instrument, int volume, int part) {
 
 public Note (int note, int instrument, int part) {
 
+    this (note, instrument);
+    
+    this.part = part;
+    
+    if      (this.part > 16) { this.part = 16; }
+    else if (this.part < 1)  { this.part = 1;  }
+    
+}
+
+// ............................................................................
+
+    /**
+     * Конструктор класу Note
+     * @param note висота ноти, від 0 до 127
+     * @param instrument інструмент, від 0 до 127
+     */
+
+public Note (int note, int instrument) {
+
     this.note       = note;
     this.instrument = instrument;
-    this.part       = part;
+    this.volume     = 127;
+    this.part       = 1;
     
     if      (this.note > 127) { this.note = 127; }
     else if (this.note < 0)   { this.note = 0;   }
     
     if      (this.instrument > 127) { this.instrument = 127; }
     else if (this.instrument < 0)   { this.instrument = 0;   }
-
-    if      (this.part > 16) { this.part = 16; }
-    else if (this.part < 1)  { this.part = 1;  }
     
 }
 
