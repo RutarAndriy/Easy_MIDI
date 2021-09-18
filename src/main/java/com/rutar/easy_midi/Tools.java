@@ -6,60 +6,57 @@ import javax.sound.midi.*;
 
 public class Tools {
 
-private static MidiChannel drumChannel = null;
-private static Synthesizer synthesizer = null;
+private static Synthesizer synthesizer;             // Об'єкт класу Synthesizer
+private static MidiChannel main_channel;                 // Головний MIDI канал
+private static Instrument[] instruments;        // Масив доступних інструментів
 
-private static Instrument[] instruments;
-
-private static final int[][] channels = new int[8][128];
+private static final int[][] channels = new int[8][128];              // Канали
 
 // ............................................................................
 
-public static void initSynthesizer() {
+    /**
+     * Метод ініціалізує MIDI систему
+     */
 
-    if (synthesizer == null) {
+private static void initSynthesizer() {
 
-        try {
-            
-            synthesizer = MidiSystem.getSynthesizer();
-            synthesizer.open();
-            instruments = synthesizer.getDefaultSoundbank().getInstruments();
-            int c = openNote(0, 60, 0);
-            Thread.sleep(100);
-            closeNote(60, c);
+    if (synthesizer != null) { return; }
+
+    try {
+
+        synthesizer = MidiSystem.getSynthesizer();
+        synthesizer.open();
         
-        }
+        instruments = synthesizer.getDefaultSoundbank().getInstruments();
+        main_channel = synthesizer.getChannels()[9];
+
+    }
+
+    catch (Throwable t) { t.printStackTrace(); }
+
+}
+
+// ............................................................................
+
+    /**
+     * Метод дозволяє відтворити ноту
+     * @param note_to_play нота для відтворення, об'єкт класу Note
+     * @param time час відтворення ноти
+     */
+
+public static void playNote (final Note note_to_play,
+                             final int time) {
+
+    final int note       = note_to_play.getNote();
+    final int instrument = note_to_play.getInstrument();
+    final int volume     = note_to_play.getVolume();
+    final int channel    = openNote(note, instrument, volume);
+    
+    new Thread(() -> {
         
+        try { Thread.sleep(time);
+              closeNote(note, channel); }
         catch (Throwable t) { t.printStackTrace(); }
-        
-        if (drumChannel == null) {
-            drumChannel = synthesizer.getChannels()[9];
-        }
-
-    }
-}
-
-// ............................................................................
-
-public static void playNote (int pitch, 
-                             int instrument,
-                             int velocity,
-                             int delay) {
-
-    final int c = openNote(instrument, pitch, velocity);
-    final int d = delay;
-    final int p = pitch;
-    
-    new Thread(new Runnable() {
-
-        @Override
-        public void run() {
-            
-            try { Thread.sleep(d);
-                  closeNote(p, c); }
-            catch (Throwable t) { t.printStackTrace(); }
-
-        }
 
     }).start();
 
@@ -67,81 +64,107 @@ public static void playNote (int pitch,
 
 // ............................................................................
 
-public static int openNote (int instrument,
-                            int pitch,
-                            int velocity) {
+    /**
+     * Метод починає відтворювати ноту
+     * @param note нота для відтворення
+     * @param instrument інструмент для відтворення ноти
+     * @param volume гучність ноти
+     * @return канал, на якому буде відтворюватися нота
+     */
+
+public static int openNote (int note,
+                            int instrument,
+                            int volume) {
 
     initSynthesizer();
-    int c = 0;
+    int channel = 0;
     
-    for (int i = 0; i < 8; i++) {
+    for (int z = 0; z < channels.length; z++) {
         
-        if (channels[i][pitch] == 0) {
-                channels[i][pitch] = 1;
-                c = i;
-                break;
-        }
+        if (channels[z][note] == 0) { channels[z][note] = 1;
+                                      channel = z;
+                                      break; }
+    
     }
     
-    MidiChannel voiceChannel = synthesizer.getChannels()[c];
+    MidiChannel temp_channel = synthesizer.getChannels()[channel];
     synthesizer.loadInstrument(instruments[instrument]);
-    voiceChannel.programChange(instrument);
-    voiceChannel.noteOn(pitch, velocity);
-    return c;
+    temp_channel.programChange(instrument);
+    temp_channel.noteOn(note, volume);
+    
+    return channel;
 
 }
 
 // ............................................................................
 
-public static void closeNote (int pitch, int channel) {
+    /**
+     * Метод завершує відтворення ноти
+     * @param note нота для закриття
+     * @param channel канал, на якому відтворюється нота
+     */
+
+public static void closeNote (int note, int channel) {
+
+    MidiChannel temp_channel = synthesizer.getChannels()[channel];
+    temp_channel.noteOff(note);
+    channels[channel][note] = 0;
+
+}
+
+// ............................................................................
+
+    /**
+     * Метод дозволяє відтворити ударний інструмент
+     * @param drum_to_play ударний інструмент для відтворення,
+     *                     об'єкт класу Drum
+     * @param time час відтворення ударного інструменту
+     */
+
+public static void playDrum (final Drum drum_to_play,
+                             final int time) {
+
+    final int instrument = drum_to_play.getInstrument();
+    final int volume     = drum_to_play.getVolume();
+
+    openDrum(instrument, volume);
+
+    new Thread(() -> {
         
-    initSynthesizer();
-    MidiChannel voiceChannel = synthesizer.getChannels()[channel];
-    voiceChannel.noteOff(pitch);
-    channels[channel][pitch] = 0;
-
-}
-
-// ............................................................................
-
-public static void playDrum (int instrument,
-                             int velocity,
-                             int delay) {
-
-    openDrum(instrument, velocity);
-    final int d = delay;
-    final int i = instrument;
-
-    new Thread(new Runnable() {
-
-        @Override
-        public void run() {
-            
-            try { Thread.sleep(d);
-                  closeDrum(i); }
-            catch (Throwable t) { t.printStackTrace(); }
-        }
-
+        try { Thread.sleep(time);
+              closeDrum(instrument); }
+        catch (Throwable t) { t.printStackTrace(); }
+    
     }).start();
 
 }
 
 // ............................................................................
 
-public static void openDrum (int instrument, int velocity) {
+    /**
+     * Метод починає відтворювати ударний інструмент
+     * @param instrument ударний інструмент для відтворення
+     * @param volume гучність ударного інструменту
+     */
+
+public static void openDrum (int instrument, int volume) {
 
     initSynthesizer();
-    drumChannel.noteOn(instrument, velocity);
+    main_channel.noteOn(instrument, volume);
 
 }
 
 // ............................................................................
+
+    /**
+     * Метод завершує відтворення ударного інструменту
+     * @param instrument ударний інструмент для закриття
+     */
 
 public static void closeDrum (int instrument) {
     
-    initSynthesizer();
-    drumChannel.noteOff(instrument);
-
+    main_channel.noteOff(instrument);
+    
 }
 
 // ............................................................................
