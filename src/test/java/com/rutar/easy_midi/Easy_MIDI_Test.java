@@ -33,7 +33,7 @@ try {
 
 for (int z = 0; z < notes.length; z++) {
 
-    Tools.playNote(notes[z], instruments[z], 127, durations[z]);
+    Tools.playNote(new Note(notes[z], instruments[z]), durations[z]);
     
     try { Thread.sleep(durations[z]); }
     catch (Exception e) { assertTrue(false); }
@@ -69,7 +69,7 @@ try {
 
 for (int z = 0; z < drums.length; z++) {
 
-    Tools.playDrum(drums[z], 127, durations[z]);
+    Tools.playDrum(new Drum(drums[z]), durations[z]);
     
     try { Thread.sleep(durations[z]); }
     catch (Exception e) { assertTrue(false); }
