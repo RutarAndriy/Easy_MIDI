@@ -18,7 +18,7 @@ private static final int[][] channels = new int[8][128];              // Кан�
      * Метод ініціалізує MIDI систему
      */
 
-private static void initSynthesizer() {
+public static void initSynthesizer() {
 
     if (synthesizer != null) { return; }
 
@@ -162,7 +162,7 @@ public static void openDrum (int instrument, int volume) {
      */
 
 public static void closeDrum (int instrument) {
-    
+
     main_channel.noteOff(instrument);
     
 }

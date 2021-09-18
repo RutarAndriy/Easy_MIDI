@@ -365,7 +365,7 @@ public void play() {
 
 public void stop() {
 
-    Tools.closeNote(instrument, channel);
+    Tools.closeNote(note, channel);
     on = false;
 
 }
