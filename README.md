@@ -1,7 +1,8 @@
 # Easy MIDI
 
-[![GitHub release](https://img.shields.io/github/release/RutarAndriy/Easy_MIDI.svg)](https://github.com/RutarAndriy/Easy_MIDI/releases)
-[![](https://jitpack.io/v/RutarAndriy/Easy_MIDI.svg)](https://jitpack.io/#RutarAndriy/Easy_MIDI)
+[![License](https://img.shields.io/github/license/RutarAndriy/Easy_MIDI?color=%23FF5555)](https://opensource.org/licenses/Apache-2.0)
+[![Release](https://img.shields.io/github/release/RutarAndriy/Easy_MIDI.svg)](https://github.com/RutarAndriy/Easy_MIDI/releases)
+[![JitPack](https://jitpack.io/v/RutarAndriy/Easy_MIDI.svg)](https://jitpack.io/#RutarAndriy/Easy_MIDI)
 
 Easy MIDI – бібліотека для роботи з MIDI на java. Представляє собою обгортку стандартних класів з пакету `javax.sound.midi.*`, основні функції яких були інкапсульовані у декількох високорівневих методах, які будуть зручними для тих, хто бажає використовувати MIDI-функціонал у своїх проектах, не заглиблюючись у низькорівневі аспекти стандартних класів.
 
@@ -103,6 +104,8 @@ ticker.stop();
 
 Для ознайомлення із можливостями бібліотеки можна запустити її виконавчий jar-файл – запуститься Demo програма, у якій можна перевірити відтворення тестового музичного фрагменту на різних інструментах та при різному значенні темпу.
 
-<img src="/demo_screenshot.png">
+<p align="center">
+  <img src="/demo_screenshot.png">
+</p>
 
 Добавити бібліотеку в свій проект можна за допомогою залежностей. Бібліотека доступна на [JitPack.IO](https://jitpack.io/#RutarAndriy/Easy_MIDI)
