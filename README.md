@@ -2,7 +2,10 @@
 
 [![License](https://img.shields.io/github/license/RutarAndriy/Easy_MIDI?color=%23FF5555)](https://opensource.org/licenses/Apache-2.0)
 [![Release](https://img.shields.io/github/release/RutarAndriy/Easy_MIDI.svg)](https://github.com/RutarAndriy/Easy_MIDI/releases)
-[![JitPack](https://jitpack.io/v/RutarAndriy/Easy_MIDI.svg)](https://jitpack.io/#RutarAndriy/Easy_MIDI)
+[![JitPack](https://img.shields.io/badge/JitPack-1.0.0-brightgreen)](https://jitpack.io/#RutarAndriy/Easy_MIDI)
+
+<!-- Broken barge, something went wrong -->
+<!-- [![JitPack](https://jitpack.io/v/RutarAndriy/Easy_MIDI.svg)](https://jitpack.io/#RutarAndriy/Easy_MIDI) -->
 
 Easy MIDI – бібліотека для роботи з MIDI на java. Представляє собою обгортку стандартних класів з пакету `javax.sound.midi.*`, основні функції яких були інкапсульовані у декількох високорівневих методах, які будуть зручними для тих, хто бажає використовувати MIDI-функціонал у своїх проектах, не заглиблюючись у низькорівневі аспекти стандартних класів.
 
